@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ScheduleModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ScheduleModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="ScheduleModel.Store.Customer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Resource" EntityType="ScheduleModel.Store.Resource" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ResourceType" EntityType="ScheduleModel.Store.ResourceType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Schedule" EntityType="ScheduleModel.Store.Schedule" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ScheduleDetail" EntityType="ScheduleModel.Store.ScheduleDetail" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Resource_ResourceType" Association="ScheduleModel.Store.FK_Resource_ResourceType">
+            <End Role="ResourceType" EntitySet="ResourceType" />
+            <End Role="Resource" EntitySet="Resource" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Resource" Association="ScheduleModel.Store.FK_Schedule_Resource">
+            <End Role="Resource" EntitySet="Resource" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScheduleDetail_Customer" Association="ScheduleModel.Store.FK_ScheduleDetail_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="ScheduleModel.Store.FK_ScheduleDetail_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContactFirstName" Type="nvarchar" MaxLength="30" />
+          <Property Name="ContactLastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyOrDepartment" Type="nvarchar" MaxLength="50" />
+          <Property Name="BillingAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="StateOrProvince" Type="nvarchar" MaxLength="20" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="30" />
+          <Property Name="Extension" Type="nvarchar" MaxLength="30" />
+          <Property Name="FaxNumber" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="ResourceID" />
+          </Key>
+          <Property Name="ResourceID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ResourceTypeID" Type="int" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ResourceType">
+          <Key>
+            <PropertyRef Name="ResourceTypeID" />
+          </Key>
+          <Property Name="ResourceTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="int" />
+          <Property Name="ScheduleDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="ScheduleDetailID" />
+          </Key>
+          <Property Name="ScheduleDetailID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleID" Type="int" Nullable="false" />
+          <Property Name="CustomerID" Type="int" />
+          <Property Name="ScheduleStartTime" Type="datetime" />
+          <Property Name="ScheduleEndTime" Type="datetime" />
+          <Property Name="Confirmed" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Resource_ResourceType">
+          <End Role="ResourceType" Type="ScheduleModel.Store.ResourceType" Multiplicity="0..1" />
+          <End Role="Resource" Type="ScheduleModel.Store.Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResourceType">
+              <PropertyRef Name="ResourceTypeID" />
+            </Principal>
+            <Dependent Role="Resource">
+              <PropertyRef Name="ResourceTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Resource">
+          <End Role="Resource" Type="ScheduleModel.Store.Resource" Multiplicity="0..1" />
+          <End Role="Schedule" Type="ScheduleModel.Store.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resource">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScheduleDetail_Customer">
+          <End Role="Customer" Type="ScheduleModel.Store.Customer" Multiplicity="0..1" />
+          <End Role="ScheduleDetail" Type="ScheduleModel.Store.ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScheduleDetail_Schedule">
+          <End Role="Schedule" Type="ScheduleModel.Store.Schedule" Multiplicity="1" />
+          <End Role="ScheduleDetail" Type="ScheduleModel.Store.ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="ScheduleID" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ScheduleModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ScheduleEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="ScheduleModel.Customer" />
+          <EntitySet Name="Resources" EntityType="ScheduleModel.Resource" />
+          <EntitySet Name="ResourceTypes" EntityType="ScheduleModel.ResourceType" />
+          <EntitySet Name="Schedules" EntityType="ScheduleModel.Schedule" />
+          <EntitySet Name="ScheduleDetails" EntityType="ScheduleModel.ScheduleDetail" />
+          <AssociationSet Name="FK_ScheduleDetail_Customer" Association="ScheduleModel.FK_ScheduleDetail_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resource_ResourceType" Association="ScheduleModel.FK_Resource_ResourceType">
+            <End Role="ResourceType" EntitySet="ResourceTypes" />
+            <End Role="Resource" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Resource" Association="ScheduleModel.FK_Schedule_Resource">
+            <End Role="Resource" EntitySet="Resources" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="ScheduleModel.FK_ScheduleDetail_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ContactFirstName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="ContactLastName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CompanyOrDepartment" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="BillingAddress" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="City" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="StateOrProvince" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="Country" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ContactTitle" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="Extension" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="FaxNumber" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ScheduleDetails" Relationship="ScheduleModel.FK_ScheduleDetail_Customer" FromRole="Customer" ToRole="ScheduleDetail" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="ResourceID" />
+          </Key>
+          <Property Name="ResourceID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ResourceTypeID" Type="Int32" />
+          <Property Name="Comments" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ResourceType" Relationship="ScheduleModel.FK_Resource_ResourceType" FromRole="Resource" ToRole="ResourceType" />
+          <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_Resource" FromRole="Resource" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="ResourceType">
+          <Key>
+            <PropertyRef Name="ResourceTypeID" />
+          </Key>
+          <Property Name="ResourceTypeID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceType1" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Resources" Relationship="ScheduleModel.FK_Resource_ResourceType" FromRole="ResourceType" ToRole="Resource" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="Int32" />
+          <Property Name="ScheduleDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Resource" Relationship="ScheduleModel.FK_Schedule_Resource" FromRole="Schedule" ToRole="Resource" />
+          <NavigationProperty Name="ScheduleDetails" Relationship="ScheduleModel.FK_ScheduleDetail_Schedule" FromRole="Schedule" ToRole="ScheduleDetail" />
+        </EntityType>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="ScheduleDetailID" />
+          </Key>
+          <Property Name="ScheduleDetailID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="ScheduleStartTime" Type="DateTime" Precision="3" />
+          <Property Name="ScheduleEndTime" Type="DateTime" Precision="3" />
+          <Property Name="Confirmed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="ScheduleModel.FK_ScheduleDetail_Customer" FromRole="ScheduleDetail" ToRole="Customer" />
+          <NavigationProperty Name="Schedule" Relationship="ScheduleModel.FK_ScheduleDetail_Schedule" FromRole="ScheduleDetail" ToRole="Schedule" />
+        </EntityType>
+        <Association Name="FK_ScheduleDetail_Customer">
+          <End Role="Customer" Type="ScheduleModel.Customer" Multiplicity="0..1" />
+          <End Role="ScheduleDetail" Type="ScheduleModel.ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resource_ResourceType">
+          <End Role="ResourceType" Type="ScheduleModel.ResourceType" Multiplicity="0..1" />
+          <End Role="Resource" Type="ScheduleModel.Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResourceType">
+              <PropertyRef Name="ResourceTypeID" />
+            </Principal>
+            <Dependent Role="Resource">
+              <PropertyRef Name="ResourceTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Resource">
+          <End Role="Resource" Type="ScheduleModel.Resource" Multiplicity="0..1" />
+          <End Role="Schedule" Type="ScheduleModel.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resource">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScheduleDetail_Schedule">
+          <End Role="Schedule" Type="ScheduleModel.Schedule" Multiplicity="1" />
+          <End Role="ScheduleDetail" Type="ScheduleModel.ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="ScheduleID" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ScheduleModelStoreContainer" CdmEntityContainer="ScheduleEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="ScheduleModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="ContactFirstName" ColumnName="ContactFirstName" />
+                <ScalarProperty Name="ContactLastName" ColumnName="ContactLastName" />
+                <ScalarProperty Name="CompanyOrDepartment" ColumnName="CompanyOrDepartment" />
+                <ScalarProperty Name="BillingAddress" ColumnName="BillingAddress" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateOrProvince" ColumnName="StateOrProvince" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ContactTitle" ColumnName="ContactTitle" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="FaxNumber" ColumnName="FaxNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resources">
+            <EntityTypeMapping TypeName="ScheduleModel.Resource">
+              <MappingFragment StoreEntitySet="Resource">
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResourceTypes">
+            <EntityTypeMapping TypeName="ScheduleModel.ResourceType">
+              <MappingFragment StoreEntitySet="ResourceType">
+                <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
+                <ScalarProperty Name="ResourceType1" ColumnName="ResourceType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="ScheduleModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleDetails">
+            <EntityTypeMapping TypeName="ScheduleModel.ScheduleDetail">
+              <MappingFragment StoreEntitySet="ScheduleDetail">
+                <ScalarProperty Name="ScheduleDetailID" ColumnName="ScheduleDetailID" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="ScheduleStartTime" ColumnName="ScheduleStartTime" />
+                <ScalarProperty Name="ScheduleEndTime" ColumnName="ScheduleEndTime" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,17 @@
+﻿body {
+    margin-top: 90px;
+}
+
+/* Override some bootstrap styles */
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    color: #fff;
+    background-color: #363940;
+}
+
+.nav>li>a:hover, .nav>li>a:focus {
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+/* End Bootstrap Styles */

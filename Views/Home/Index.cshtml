@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Resourceful.Models.Resource>
+
+@{
+    ViewBag.Title = "Resourceful: Resources";
+}
+
+
+@(Html.Kendo().Grid(Model)
+    .Name("Resources")
+    .Columns(columns => {
+        columns.Bound(p => p.ResourceName).Title("Resource Name");
+        columns.Bound(p => p.Comments).Title("Comments");
+        columns.Bound(p => p.ResourceType).ClientTemplate("#: ResourceType.ResourceTypeName #").Title("Resource Type");
+        columns.Command(command => {
+            command.Edit();
+            command.Destroy();
+        });
+    })
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    .DataSource(datasource => datasource
+        .Ajax()
+        .ServerOperation(false)
+        .Model(model => {
+            model.Id("ResourceID");
+            model.Field(field => field.ResourceType).DefaultValue(
+                ViewData["defaultResourceType"] as Resourceful.Models.ResourceType);
+        })
+        .Update(update => {
+            update.Action("Update", "Resources");
+        })
+        .Create(create => {
+            create.Action("Create", "Resources");
+        })
+        .Destroy(delete => {
+            delete.Action("Delete", "Resources");
+        })
+    )
+    .ToolBar(toolbar => {
+        toolbar.Create();
+    })
+)

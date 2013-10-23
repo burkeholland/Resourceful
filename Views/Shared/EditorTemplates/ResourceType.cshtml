@@ -1,0 +1,10 @@
+﻿@model Resourceful.Models.ResourceType
+
+@(Html.Kendo().DropDownList().Name("ResourceType")
+    .DataTextField("ResourceTypeName")
+    .DataValueField("ResourceTypeID")
+    .DataSource(datasource => datasource
+        .Read(read => read.Action("Index", "ResourceTypes"))
+    )
+)
+  
