@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Resourceful.Models.Reservation>
+
+@{
+    ViewBag.Title = "Resourceful: Reservations";
+}
+
+@(Html.Kendo().Scheduler<Resourceful.Models.Reservation>()
+    .Name("Reservations")
+    .Date(new DateTime(2000, 5, 22))
+    .StartTime(8, 0, 0)
+    .EndTime(19, 0, 0)
+    .DataSource(d => d
+        .Read("Get", "Reservations")
+        .Model(m => {
+            m.Id(f => f.ResourceID);
+        })
+    )
+    .Resources(r =>
+    {
+        r.Add(m => m.ResourceID)
+            .Title("Resource")
+            .DataSource(d1 => d1
+                .Read("Index", "Resources")
+            )
+            .DataTextField("ResourceName")
+            .DataValueField("ResourceID")
+            .DataColorField("Color");
+    })
+)
