@@ -16,10 +16,12 @@ namespace Resourceful.Controllers
         public ActionResult Index()
         {
             // query the database for all resources
-            var resources = _resourceRepository.Get();
+            var resources = _resourceRepository.All();
 
             // push the first item in the resources collection ResourceType as the default
-            ViewBag.defaultResourceType = _resourceTypeRepository.All().FirstOrDefault();
+            ViewBag.DefaultResourceType = _resourceTypeRepository.All().FirstOrDefault();
+
+            ViewBag.Tab = "resources";
 
             // pass the resources to the view as the model
             return View(resources);
