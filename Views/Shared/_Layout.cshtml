@@ -9,7 +9,8 @@
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 
     <script src="http://cdn.kendostatic.com/2013.2.918/js/jquery.min.js"></script>
-    <script src="http://cdn.kendostatic.com/2013.2.918/js/kendo.all.min.js"></script>
+    @*<script src="http://cdn.kendostatic.com/2013.2.918/js/kendo.all.min.js"></script>*@
+    <script src="@Url.Content("~/Scripts/kendo.all.js")"></script>  
     <script src="http://cdn.kendostatic.com/2013.2.918/js/kendo.aspnetmvc.min.js"></script>
     <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
 </head>
@@ -37,12 +38,14 @@
         <div class="row">
             <div class="col-md-3">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active">
-                        <a href="#">Resources</a>
+                    <li id="resources">
+                        @Html.ActionLink("Home", "Index", "Home")
                     </li>
-                    <li><a href="#">Reservations</a></li>
-                    <li><a href="#">Other Information</a></li>
-                    <li><a href="#">Reports</a></li>
+                    <li id="reservations">
+                        @Html.ActionLink("Reservations", "Index", "Reservations")
+                    </li>
+                    <li id="other"><a href="#">Other Information</a></li>
+                    <li id="reports"><a href="#">Reports</a></li>
                 </ul>
             </div>
             <div class="col-md-9">
@@ -50,6 +53,24 @@
             </div>
         </div>
     </div>
+
+    <script>
+
+        window.app = window.app || {};
+
+        window.app.custom = window.app.custom || {};
+
+        window.app.custom.changeColor = function (e) {
+            console.log();
+        }
+
+        $(function () {
+                
+            $("#@ViewBag.Tab").addClass("active");
+
+        });
+
+    </script>
 
 </body>
 </html>
