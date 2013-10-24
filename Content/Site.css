@@ -2,6 +2,14 @@
     margin-top: 90px;
 }
 
+.circle {
+	border-radius: 50%;
+	width: 25px;
+	height: 25px; 
+    margin: auto;
+	/* width and height can be anything, as long as they're equal */
+}
+
 /* Override some bootstrap styles */
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
