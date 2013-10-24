@@ -11,6 +11,7 @@
         columns.Bound(p => p.ResourceName).Title("Resource Name");
         columns.Bound(p => p.Comments).Title("Comments");
         columns.Bound(p => p.ResourceType).ClientTemplate("#: ResourceType.ResourceTypeName #").Title("Resource Type");
+        columns.Bound(p => p.Color).Title("Color").ClientTemplate("<div class='circle' style='background-color: #: Color #'></div>");
         columns.Command(command => {
             command.Edit();
             command.Destroy();
@@ -23,7 +24,7 @@
         .Model(model => {
             model.Id("ResourceID");
             model.Field(field => field.ResourceType).DefaultValue(
-                ViewData["defaultResourceType"] as Resourceful.Models.ResourceType);
+                ViewData["DefaultResourceType"] as Resourceful.Models.ResourceType);
         })
         .Update(update => {
             update.Action("Update", "Resources");
