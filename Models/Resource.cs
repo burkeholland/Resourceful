@@ -16,5 +16,8 @@ namespace Resourceful.Models {
 
         [UIHint("ResourceType")]
         public ResourceType ResourceType { get; set; }
+
+        [UIHint("ResourceColor")]
+        public string Color { get; set; }
     }
 }

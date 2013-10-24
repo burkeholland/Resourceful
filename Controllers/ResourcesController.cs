@@ -10,11 +10,19 @@ namespace Resourceful.Controllers
 {
     public class ResourcesController : Controller
     {
-        readonly Repositories.ResourceRepository _resourceRepository = new Repositories.ResourceRepository();
+        readonly Repositories.ResourceRepository _resourceRepo = new Repositories.ResourceRepository();
+
+        public ActionResult Index() {
+
+            var resources = _resourceRepo.All();
+
+            return Json(resources, JsonRequestBehavior.AllowGet);
+        
+        }
 
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, Models.Resource resource) {
             if (resource != null && ModelState.IsValid) {
-                _resourceRepository.Update(resource);
+                _resourceRepo.Update(resource);
             }
 
             return Json(new[] { resource }.ToDataSourceResult(request, ModelState));
@@ -23,7 +31,7 @@ namespace Resourceful.Controllers
         public ActionResult Create([DataSourceRequest] DataSourceRequest request, Models.Resource resource) {
 
             if (resource != null && ModelState.IsValid) {
-                resource.ResourceID = _resourceRepository.Create(resource);
+                resource.ResourceID = _resourceRepo.Create(resource);
             }
 
             return Json(new[] { resource }.ToDataSourceResult(request, ModelState));

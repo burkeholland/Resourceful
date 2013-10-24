@@ -23,6 +23,7 @@ namespace Resourceful.Data
         public string ResourceName { get; set; }
         public Nullable<int> ResourceTypeID { get; set; }
         public string Comments { get; set; }
+        public string Color { get; set; }
     
         public virtual ResourceType ResourceType { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }

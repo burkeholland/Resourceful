@@ -8,7 +8,7 @@ namespace Resourceful.Repositories {
 
         Data.ScheduleEntities _entities = new Data.ScheduleEntities();
 
-        public IQueryable<Models.Resource> Get() {
+        public IQueryable<Models.Resource> All() {
 
             var resources = _entities.Resources.Select(r => new Models.Resource {
                 ResourceID = r.ResourceID,
@@ -17,7 +17,8 @@ namespace Resourceful.Repositories {
                     ResourceTypeID = r.ResourceType.ResourceTypeID,
                     ResourceTypeName = r.ResourceType.ResourceType1
                 },
-                Comments = r.Comments
+                Comments = r.Comments,
+                Color = r.Color
             });
 
             return resources;
@@ -25,7 +26,7 @@ namespace Resourceful.Repositories {
         }
 
         public Models.Resource One(Func<Models.Resource, bool> action) {
-            return Get().Where(action).FirstOrDefault();
+            return All().Where(action).FirstOrDefault();
         }
 
         public void Update(Models.Resource resource) {
@@ -36,6 +37,7 @@ namespace Resourceful.Repositories {
                 target.ResourceName = resource.ResourceName;
                 target.Comments = resource.Comments;
                 target.ResourceTypeID = resource.ResourceType.ResourceTypeID;
+                target.Color = resource.Color;
 
                 _entities.SaveChanges();
             }
@@ -47,6 +49,7 @@ namespace Resourceful.Repositories {
                 ResourceName = resource.ResourceName,
                 Comments = resource.Comments,
                 ResourceTypeID = resource.ResourceType.ResourceTypeID,
+                Color = resource.Color
             };
 
             var result = _entities.Resources.Add(target);

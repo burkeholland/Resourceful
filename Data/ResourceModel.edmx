@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ScheduleModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ScheduleModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="ScheduleModelStoreContainer">
           <EntitySet Name="Customer" EntityType="ScheduleModel.Store.Customer" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Resource" EntityType="ScheduleModel.Store.Resource" store:Type="Tables" Schema="dbo" />
@@ -54,6 +54,7 @@
           <Property Name="ResourceName" Type="nvarchar" MaxLength="50" />
           <Property Name="ResourceTypeID" Type="int" />
           <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="Color" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ResourceType">
           <Key>
@@ -129,8 +130,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ScheduleModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -186,6 +186,7 @@
           <Property Name="Comments" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="ResourceType" Relationship="ScheduleModel.FK_Resource_ResourceType" FromRole="Resource" ToRole="ResourceType" />
           <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_Resource" FromRole="Resource" ToRole="Schedule" />
+          <Property Type="String" Name="Color" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ResourceType">
           <Key>
@@ -294,6 +295,7 @@
           <EntitySetMapping Name="Resources">
             <EntityTypeMapping TypeName="ScheduleModel.Resource">
               <MappingFragment StoreEntitySet="Resource">
+                <ScalarProperty Name="Color" ColumnName="Color" />
                 <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
                 <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
                 <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
